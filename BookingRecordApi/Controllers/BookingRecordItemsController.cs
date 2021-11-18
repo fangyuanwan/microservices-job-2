@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BookingRecordApi.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace BookingRecordApi.Controllers
 {
@@ -87,11 +89,29 @@ namespace BookingRecordApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BookingRecordItem>> PostBookingRecordItem(BookingRecordItem bookingRecordItem)
         {
+
+            
+            
+            using (var httpClient = new HttpClient())
+            {
+            
+                using (var response = await httpClient.GetAsync("https://freegeoip.app/json/?apikey=7322ce70-2741-11ec-a395-7f2b5c241db6"))
+                {
+                    using(var content = response.Content)
+                    {
+                        var result = await content.ReadAsStringAsync();
+                        var root = JsonConvert.DeserializeObject<APIgetlatlon>(result);
+                        bookingRecordItem.CurrentLocationLat = root.latitude;
+                        bookingRecordItem.CurrentLocationLon = root.longitude;
+                    }
+                }
+            }
             _context.bookingitems.Add(bookingRecordItem);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBookingRecordItem", new { id = bookingRecordItem.Id }, bookingRecordItem);
         }
+
 
         // DELETE: api/BookingRecordItems/5
         [HttpDelete("{id}")]

@@ -20,6 +20,7 @@ namespace BookingRecordApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -29,6 +30,7 @@ namespace BookingRecordApi
         {
 
             services.AddControllers();
+            services.AddHttpClient();
             services.AddDbContext<BookingRecordContext>(opt =>
                                                opt.UseInMemoryDatabase("BookingRecordList"));
             services.AddSwaggerGen(c =>
@@ -47,7 +49,8 @@ namespace BookingRecordApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
 
             }
-
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
