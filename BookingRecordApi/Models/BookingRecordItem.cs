@@ -3,7 +3,7 @@ namespace BookingRecordApi.Models
 {
     public class BookingRecordItem
     {
-       public DateTime datetime { get; set; }
+       public long Id { get; set; }
        public string Date { get; set; }
        public string Time { get; set; }
        public string PickupPoint { get; set; }

@@ -1,14 +1,15 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+
 namespace BookingRecordApi.Models
 {
-    public class BookingRecordContext:DbContext
+    public class BookingRecordContext: DbContext
 
     {
-        public BookingRecordContext(DbContextOptions<BookingRecordContext> options)
-            : base(options)
+        public BookingRecordContext(DbContextOptions<BookingRecordContext> options):base(options)
         {
         }
-        public DbSet<BookingRecordItem> BookingRecordItems { get; set; }
+
+        public DbSet<BookingRecordItem> bookingitems { get; set; }
     }
 }
